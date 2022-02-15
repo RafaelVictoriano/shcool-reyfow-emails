@@ -13,6 +13,9 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class StudentsEmails {
@@ -28,10 +31,12 @@ public class StudentsEmails {
 
 
     @SqsListener(value = "${aws.queue.name}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
-    public void receiveMessage(String message, @Header("TransactionId") String transactionId) {
-        this.logger.debug("Received message {}", transactionId);
-        var student = this.gson.fromJson(message, StudentDTO.class);
-        this.buildEmail(student, transactionId);
+    public void receiveMessage(String message, @Header(value = "TransactionId", required = false) String transactionId) {
+        var tid = Optional.ofNullable(transactionId).orElse(UUID.randomUUID().toString());
+        this.logger.debug("Received message {}", tid);
+        var args = this.gson.fromJson(message, Map.class);
+        String messageJson = (String) args.get("Message");
+        this.buildEmail(this.gson.fromJson(messageJson, StudentDTO.class), tid);
     }
 
     private void buildEmail(StudentDTO student, String transactionId) {
