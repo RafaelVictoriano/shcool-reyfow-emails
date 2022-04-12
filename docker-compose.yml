@@ -1,0 +1,19 @@
+version: '2'
+services:
+  springboot:
+    container_name: school-reyfow-emails
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: school-reyfow-email:latest
+    ports:
+      - 5002:8080
+    networks:
+      - spring-network
+    environment:
+      aws.queue.name: 'student-create'
+      aws.secret-manager: 'prod-school-emails-company'
+
+networks:
+  spring-network:
+    driver: bridge
