@@ -1,4 +1,4 @@
-package comr.br.school.reyfowemails.enrollstudent;
+package comr.br.school.reyfowemails.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;

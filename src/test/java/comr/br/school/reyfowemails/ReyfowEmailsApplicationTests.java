@@ -1,6 +1,6 @@
 package comr.br.school.reyfowemails;
 
-import comr.br.school.reyfowemails.enrollstudent.SendingEmailNewStudentEnrolled;
+import comr.br.school.reyfowemails.configs.SendingEmailNewStudentEnrolled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
