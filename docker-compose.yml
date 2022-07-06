@@ -12,7 +12,6 @@ services:
       - spring-network
     environment:
       aws.queue.name: 'student-create'
-      aws.secret-manager: 'prod-school-emails-company'
 
 networks:
   spring-network:

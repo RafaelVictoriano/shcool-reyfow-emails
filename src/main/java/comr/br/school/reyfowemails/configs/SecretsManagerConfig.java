@@ -7,7 +7,6 @@ import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
 
 @Configuration
 public class SecretsManagerConfig {
-
     @Bean
     public SecretsManagerClient secretsManagerClient() {
         return SecretsManagerClient.builder()

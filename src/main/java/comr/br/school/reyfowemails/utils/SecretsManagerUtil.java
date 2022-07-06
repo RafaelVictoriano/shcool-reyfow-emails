@@ -15,14 +15,12 @@ public class SecretsManagerUtil {
         this.secretsManagerClient = secretsManagerClient;
     }
 
-    public String getEmail(String secretName) {
-        var gson = new Gson();
+    public <T> T getSecretAndConvert(String secretName, Class<T> valueType) {
         var getValueRequest = GetSecretValueRequest.builder()
                 .secretId(secretName)
                 .build();
 
         var secretValue = secretsManagerClient.getSecretValue(getValueRequest).secretString();
-        var dataSensitiveSchoolDTO = gson.fromJson(secretValue, DataSensitiveSchoolDTO.class);
-        return dataSensitiveSchoolDTO.getEmailCompany();
+        return JsonUtil.toObject(secretValue, valueType);
     }
 }

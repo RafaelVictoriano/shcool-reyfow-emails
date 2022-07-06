@@ -1,6 +1,6 @@
 package comr.br.school.reyfowemails;
 
-import comr.br.school.reyfowemails.configs.SendingEmailNewStudentEnrolled;
+import comr.br.school.reyfowemails.utils.ProducerEmailUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +10,7 @@ import org.springframework.mail.SimpleMailMessage;
 class ReyfowEmailsApplicationTests {
 
 	@Autowired
-	private SendingEmailNewStudentEnrolled sendingEmailNewStudentEnrolled;
+	private ProducerEmailUtil producerEmailUtil;
 
 	@Test
 	void testSendMail() {
@@ -20,7 +20,7 @@ class ReyfowEmailsApplicationTests {
 		simpleMailMessage.setSubject("Enrollment completed");
 		simpleMailMessage.setText("");
 
-		this.sendingEmailNewStudentEnrolled.sendMailMessage(simpleMailMessage);
+		this.producerEmailUtil.sendMailMessage(simpleMailMessage);
 	}
 
 }
