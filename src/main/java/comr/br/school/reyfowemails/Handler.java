@@ -16,12 +16,12 @@ public class Handler extends AbstractHandler<Config> implements RequestHandler<S
 
     @Override
     public Void handleRequest(SQSEvent sqsEvent, Context context) {
-        log.info("Message received {}", sqsEvent);
+        log.info("Event received {}", sqsEvent.getRecords());
         final var notifyStudentService = getApplicationContext().getBean(NotifyStudentService.class);
 
         sqsEvent.getRecords().forEach(message -> {
-            log.info("Body {}", message.getBody());
-            final var student = JsonUtil.toObject((String) message.getBody(), StudentDTO.class);
+            log.info("Message body {}", message.getBody());
+            final var student = JsonUtil.toObject(message.getBody(), StudentDTO.class);
             notifyStudentService.notify(student);
         });
         log.info("Processed message");

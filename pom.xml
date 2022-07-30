@@ -10,7 +10,7 @@
     </parent>
     <groupId>comr.br.school</groupId>
     <artifactId>reyfow-emails</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>reyfow-emails</name>
     <description>Project for sending emails</description>
     <properties>
