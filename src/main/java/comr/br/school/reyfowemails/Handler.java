@@ -10,7 +10,7 @@ import comr.br.school.reyfowemails.utils.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Handler extends AbstractHandler<Config> implements RequestHandler<SQSEvent, Void> {
+    public class Handler extends AbstractHandler<Config> implements RequestHandler<SQSEvent, Void> {
 
     private static final Logger log = LoggerFactory.getLogger(Handler.class);
 

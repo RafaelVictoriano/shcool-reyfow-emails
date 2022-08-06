@@ -2,6 +2,7 @@ package comr.br.school.reyfowemails.utils;
 
 import com.google.gson.Gson;
 import comr.br.school.reyfowemails.student.DataSensitiveSchoolDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
 import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRequest;
@@ -9,11 +10,8 @@ import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueReques
 @Component
 public class SecretsManagerUtil {
 
-    private final SecretsManagerClient secretsManagerClient;
-
-    public SecretsManagerUtil(SecretsManagerClient secretsManagerClient) {
-        this.secretsManagerClient = secretsManagerClient;
-    }
+    @Autowired
+    private SecretsManagerClient secretsManagerClient;
 
     public <T> T getSecretAndConvert(String secretName, Class<T> valueType) {
         var getValueRequest = GetSecretValueRequest.builder()

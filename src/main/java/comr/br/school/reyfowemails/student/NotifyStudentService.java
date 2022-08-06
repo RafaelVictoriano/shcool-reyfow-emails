@@ -15,26 +15,32 @@ import java.text.MessageFormat;
 public class NotifyStudentService {
 
     public static final String SUBJECT = "Welcome to School Reyfow";
+
     @Autowired
     private ProducerEmailUtil producerEmailUtil;
+
     @Autowired
     private SecretsManagerUtil secretsManagerUtil;
+
     @Value("${aws.secret-manager:prod-school-emails-company}")
     private String keySecretManager;
     private static final Logger log = LoggerFactory.getLogger(NotifyStudentService.class);
 
     public void notify(final StudentDTO student) {
-        final var simpleMailMessage = new SimpleMailMessage();
         final var dataSensitiveSchoolDTO = secretsManagerUtil
                 .getSecretAndConvert(keySecretManager, DataSensitiveSchoolDTO.class);
+        this.producerEmailUtil.sendMailMessage(buildEmail(dataSensitiveSchoolDTO, student));
+        log.info("Email sent success {}", student.getEmail());
+    }
 
+    private SimpleMailMessage buildEmail(final DataSensitiveSchoolDTO dataSensitiveSchoolDTO, final StudentDTO student) {
+        final var simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(dataSensitiveSchoolDTO.getEmailCompany());
         simpleMailMessage.setTo(student.getEmail());
         simpleMailMessage.setSubject(SUBJECT);
         simpleMailMessage.setText(this.messageNotification(student));
 
-        this.producerEmailUtil.sendMailMessage(simpleMailMessage);
-        log.info("Email sent success {}", student.getEmail());
+        return simpleMailMessage;
     }
 
     private String messageNotification(final StudentDTO studentDTO) {
