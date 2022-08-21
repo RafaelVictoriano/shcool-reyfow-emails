@@ -9,6 +9,3 @@ Resources:
       Runtime: java11
       Architectures:
         - x86_64
-      Environment:
-        Variables:
-          aws.queue.name: student-create

@@ -1,12 +1,12 @@
 package comr.br.school.reyfowemails.utils;
 
-import com.google.gson.Gson;
-import comr.br.school.reyfowemails.student.DataSensitiveSchoolDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
 import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRequest;
 
+@Slf4j
 @Component
 public class SecretsManagerUtil {
 
@@ -19,6 +19,7 @@ public class SecretsManagerUtil {
                 .build();
 
         var secretValue = secretsManagerClient.getSecretValue(getValueRequest).secretString();
+        log.info("Secret {}", secretValue);
         return JsonUtil.toObject(secretValue, valueType);
     }
 }
