@@ -1,9 +1,8 @@
 package comr.br.school.reyfowemails.student;
 
 import comr.br.school.reyfowemails.dto.DataSensitiveSchoolDTO;
-import comr.br.school.reyfowemails.dto.StudentDTO;
+import comr.br.school.reyfowemails.dto.EventDTO;
 import comr.br.school.reyfowemails.utils.ProducerEmailUtil;
-import comr.br.school.reyfowemails.utils.SecretsManagerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +28,14 @@ public class NotifyStudentService {
 
     private static final Logger log = LoggerFactory.getLogger(NotifyStudentService.class);
 
-    public void notify(final StudentDTO student) {
+    public void notify(final EventDTO student) {
         final var dataSensitiveSchoolDTO = secretsManagerUtil
                 .getSecretAndConvert(keySecretManager, DataSensitiveSchoolDTO.class);
         producerEmailUtil.sendMailMessage(buildEmail(dataSensitiveSchoolDTO, student));
         log.info("Email sent success {}", student.getEmail());
     }
 
-    private SendEmailRequest buildEmail(final DataSensitiveSchoolDTO dataSensitiveSchoolDTO, final StudentDTO student) {
+    private SendEmailRequest buildEmail(final DataSensitiveSchoolDTO dataSensitiveSchoolDTO, final EventDTO student) {
         final var destination = Destination.builder()
                 .toAddresses(student.getEmail())
                 .build();
@@ -65,10 +64,10 @@ public class NotifyStudentService {
                 .build();
     }
 
-    private String messageNotification(final StudentDTO studentDTO) {
+    private String messageNotification(final EventDTO eventDTO) {
         return MessageFormat.format(" Ola aluno {0}, sua matricula no curso {1} foi efetuado com sucesso. " +
                         "Seja bem vindo a Schooll Reyfow technologies!",
-                studentDTO.getName(), studentDTO.getCourseName());
+                eventDTO.getStudentName(), eventDTO.getCourseName());
     }
 
 }
