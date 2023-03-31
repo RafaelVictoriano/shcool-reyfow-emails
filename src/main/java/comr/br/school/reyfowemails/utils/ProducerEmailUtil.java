@@ -15,11 +15,6 @@ public class ProducerEmailUtil {
     private SesClient sesClient;
 
     public void sendMailMessage(SendEmailRequest sendEmailRequest) {
-        try {
-            sesClient.sendEmail(sendEmailRequest);
-        } catch (Exception exception) {
-            log.error("Error - {}", exception.getMessage());
-        }
-
+        sesClient.sendEmail(sendEmailRequest);
     }
 }

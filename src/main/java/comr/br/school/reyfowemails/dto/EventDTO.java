@@ -8,10 +8,11 @@ import java.io.Serializable;
 
 @Setter @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class StudentDTO implements Serializable {
+public class EventDTO implements Serializable {
 
-    private String name;
+    private String studentName;
     private String email;
     private String courseName;
+    private String password;
 
 }

@@ -17,18 +17,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 public class HandlerTest {
 
-//    @Autowired
-//    private Handler handler;
-//    private String JSON_PATH = "src/test/java/comr/br/school/reyfowemails/sqs-event.json";
+    @Autowired
+    private Handler handler;
+    private String JSON_PATH = "src/test/java/comr/br/school/reyfowemails/sqs-event.json";
 
-//    @Test
-//    void shouldDoesNotThrowExceptionWhenSendEmailTest() throws Exception {
-//          final String json = Files.readString(Path.of(JSON_PATH));
-//      //  final var json = JsonUtil.toObject(JSON_PATH, String.class);
-//       // final var student = new EventDTO("Rafa", "rafaelvictoriano05@hotmail.com", "Python");
-//        assertDoesNotThrow(() -> handler.apply(json));
-//    }
-//
+    @Test
+    void shouldDoesNotThrowExceptionWhenSendEmailTest() throws Exception {
+        final String json = Files.readString(Path.of(JSON_PATH));
+        assertDoesNotThrow(() -> handler.apply(json));
+    }
+
 //    @Test
 //    void shouldEqualsEmailWhenConvertJsonToStudent(String path) throws IOException {
 //        final String json = "{\"name\": \"rafael\", \"email\": \"rafaelvictoriano05@hotmail.com\", \"courseName\": \"Programação Web\"}";

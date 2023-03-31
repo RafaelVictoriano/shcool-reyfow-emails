@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.Map;
+
+import static com.fasterxml.jackson.databind.DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT;
 
 @Slf4j
 public class JsonUtil {
@@ -22,6 +25,12 @@ public class JsonUtil {
             throw new RuntimeException(e);
         }
     }
+
+    public static <T> T toObject(final Map payload, final Class<T> valueType) {
+        return mapper.convertValue(payload, valueType);
+    }
+
+
     public static <T> T fileToObject(final String payload, final Class<T> valueType) {
         try {
             return mapper.readValue(payload, valueType);

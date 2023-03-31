@@ -1,12 +1,11 @@
-package comr.br.school.reyfowemails.student;
+package comr.br.school.reyfowemails.service;
 
-import comr.br.school.reyfowemails.dto.DataSensitiveSchoolDTO;
 import comr.br.school.reyfowemails.dto.EventDTO;
+import comr.br.school.reyfowemails.enums.EventTypeEnum;
 import comr.br.school.reyfowemails.utils.ProducerEmailUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.ses.model.*;
 
@@ -20,32 +19,26 @@ public class NotifyStudentService {
     @Autowired
     private ProducerEmailUtil producerEmailUtil;
 
-    @Autowired
-    private SecretsManagerUtil secretsManagerUtil;
-
-    @Value("${aws.secret-manager:prod-school-emails-company}")
-    private String keySecretManager;
+    private static final String COMPANY_EMAIL = "rafaelvictoriano05@hotmail.com";
 
     private static final Logger log = LoggerFactory.getLogger(NotifyStudentService.class);
 
-    public void notify(final EventDTO student) {
-        final var dataSensitiveSchoolDTO = secretsManagerUtil
-                .getSecretAndConvert(keySecretManager, DataSensitiveSchoolDTO.class);
-        producerEmailUtil.sendMailMessage(buildEmail(dataSensitiveSchoolDTO, student));
-        log.info("Email sent success {}", student.getEmail());
+    public void notify(final EventDTO eventDTO, final String messageEmail, final EventTypeEnum eventType) {
+        producerEmailUtil.sendMailMessage(buildEmail(eventDTO, messageEmail, eventType));
+        log.info("Email sent success {}", eventDTO.getEmail());
     }
 
-    private SendEmailRequest buildEmail(final DataSensitiveSchoolDTO dataSensitiveSchoolDTO, final EventDTO student) {
+    private SendEmailRequest buildEmail(final EventDTO eventDTO, final String messageEmail, final EventTypeEnum eventType) {
         final var destination = Destination.builder()
-                .toAddresses(student.getEmail())
+                .toAddresses(eventDTO.getEmail())
                 .build();
 
         final var content = Content.builder()
-                .data(messageNotification(student))
+                .data(messageEmail)
                 .build();
 
         final var sub = Content.builder()
-                .data(SUBJECT)
+                .data(eventType.getSubject())
                 .build();
 
         final var body = Body.builder()
@@ -60,14 +53,7 @@ public class NotifyStudentService {
         return SendEmailRequest.builder()
                 .destination(destination)
                 .message(msg)
-                .source(dataSensitiveSchoolDTO.getEmailCompany())
+                .source(COMPANY_EMAIL)
                 .build();
     }
-
-    private String messageNotification(final EventDTO eventDTO) {
-        return MessageFormat.format(" Ola aluno {0}, sua matricula no curso {1} foi efetuado com sucesso. " +
-                        "Seja bem vindo a Schooll Reyfow technologies!",
-                eventDTO.getStudentName(), eventDTO.getCourseName());
-    }
-
 }
